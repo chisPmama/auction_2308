@@ -56,7 +56,20 @@ class Auction
     info
   end
 
-  # def date
-  #   @date = Date.today.strftime("%d/%m/%Y")
-  # end
+  def close_auction
+    items.each{|item| item.close!}
+    sell
+  end
+
+  def sell
+    sell = {}
+    items.each do |item|
+      if item.bids.empty?
+        sell[item] = 'Not Sold'
+      else
+        sell[item] = item.bids.max_by{|attendee, bid| bid}.first
+      end
+    end
+    sell
+  end
 end

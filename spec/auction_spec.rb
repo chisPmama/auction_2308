@@ -141,10 +141,19 @@ RSpec.describe Item do
     end
 
     it 'can close the auction and return a hash of all of the items and the purchase of the item' do
-      allow(@auction).to receive(:date).and_return("24/02/2020")
-      expect(@auction.date).to eq("24/02/2020")
+      expect(@auction.items.map{|item| item.closed}).to eq([false, false, false, false, false])
+      @auction.close_auction
+      expect(@auction.items.map{|item| item.closed}).to eq([true, true, true, true, true])
+      expect(@auction.close_auction.class).to be Hash
+      expect(@auction.close_auction.keys.first.class).to be Item
+      expect(@auction.close_auction[@item5]).to eq('Not Sold')
+      expect(@auction.close_auction[@item3]).to eq(@attendee2)
     end
 
-    
+    it 'checks' do
+      @auction.close_auction
+      
+    end
+
   end
 end
