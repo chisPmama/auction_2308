@@ -83,4 +83,39 @@ RSpec.describe Item do
       expect(@auction.potential_revenue).to eq(87)
     end
   end
+
+  describe '#morebidding' do
+    before(:each) do
+      @attendee1 = Attendee.new({name: 'Megan', budget: '$50'})
+      @attendee2 = Attendee.new({name: 'Bob', budget: '$75'})
+      @attendee3 = Attendee.new({name: 'Mike', budget: '$100'})
+      @auction.add_item(@item1)
+      @auction.add_item(@item2)
+      @auction.add_item(@item3)
+      @auction.add_item(@item4)
+      @auction.add_item(@item5)
+      @item1.add_bid(@attendee2, 20)
+      @item1.add_bid(@attendee1, 22)
+      @item4.add_bid(@attendee3, 50)
+      @item3.add_bid(@attendee2, 15)
+    end
+
+    it 'can return the names of all bidders per that auction' do
+      expect(@auction.bidders).to eq(["Bob", "Megan", "Mike"])
+      expect(@auction.bidders.class).to be Array
+    end
+
+    it 'can return a hash with the attendee as the key and the value is a hash containing their budget and items bidded on' do
+      expect(@auction.bidder_info.class).to be Hash
+      expect(@auction.bidder_info.keys.first.class).to be Attendee
+      expect(@auction.bidder_info.values.first.class).to be Hash
+      expect(@auction.bidder_info).to eq({@attendee1 => {:budget => 50,
+                                                         :items => [@item1]},
+                                          @attendee2 => {:budget => 75,
+                                                         :items => [@item1, @item3]},
+                                          @attendee3 => {:budget => 100,
+                                                         :items => [@item4]}
+                                        })
+    end
+  end
 end
