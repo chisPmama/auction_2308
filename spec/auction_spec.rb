@@ -152,7 +152,6 @@ RSpec.describe Item do
 
     it 'checks' do
       @auction.close_auction
-      
     end
 
   end

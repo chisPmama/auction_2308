@@ -58,7 +58,7 @@ class Auction
 
   def close_auction
     items.each{|item| item.close!}
-    sell
+    sell_with_logic
   end
 
   def sell
@@ -72,4 +72,25 @@ class Auction
     end
     sell
   end
+
+  def sell_with_logic
+    sell = {}
+    unpopular_items.each{|item| sell[item] = 'Not Sold'}
+    items_sold = items.find_all{|item| !item.bids.empty?}
+    items_sold.each do |item|
+      item_bidders = item.bids.sort_by{|attendee, bid| -bid}.to_h
+      until sell[item]
+      highest_bidder = item_bidders.first
+      their_bid = item_bidders.first.last
+      if (highest_bidder.first.budget-their_bid) > 0
+        sell[item] = highest_bidder
+        their_budget = highest_bidder.first.budget
+        highest_bidder.first.budget = their_budget - their_bid
+      else
+        item_bidders.shift
+      end
+      end
+    end
+  end
+
 end
