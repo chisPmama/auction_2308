@@ -9,7 +9,8 @@ RSpec.describe Item do
   describe '#initialize' do
     it 'exists' do
       expect(@item1.name).to eq("Chalkware Piggy Bank")
-      expect(@item1.class)to be Item
+      expect(@item1.class).to be Item
     end
   end
+
 end
