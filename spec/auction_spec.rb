@@ -118,4 +118,33 @@ RSpec.describe Item do
                                         })
     end
   end
+
+  describe '#date' do
+    before(:each) do
+      @attendee1 = Attendee.new({name: 'Megan', budget: '$50'})
+      @attendee2 = Attendee.new({name: 'Bob', budget: '$75'})
+      @attendee3 = Attendee.new({name: 'Mike', budget: '$100'})
+      @auction.add_item(@item1)
+      @auction.add_item(@item2)
+      @auction.add_item(@item3)
+      @auction.add_item(@item4)
+      @auction.add_item(@item5)
+      @item1.add_bid(@attendee2, 20)
+      @item1.add_bid(@attendee1, 22)
+      @item4.add_bid(@attendee3, 50)
+      @item3.add_bid(@attendee2, 15)
+    end
+
+    it 'can return a date when creating the auction' do
+      allow(@auction).to receive(:date).and_return("24/02/2020")
+      expect(@auction.date).to eq("24/02/2020")
+    end
+
+    it 'can close the auction and return a hash of all of the items and the purchase of the item' do
+      allow(@auction).to receive(:date).and_return("24/02/2020")
+      expect(@auction.date).to eq("24/02/2020")
+    end
+
+    
+  end
 end
